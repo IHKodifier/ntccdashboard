@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants.dart';
 import '../../../core/mock_data.dart';
 
@@ -128,11 +129,11 @@ class _DistrictBreakdownListState extends State<DistrictBreakdownList> {
             Expanded(
               child: Row(
                 children: [
-                  Icon(
+                  FaIcon(
                     trend.startsWith('+')
-                        ? Icons.trending_up
-                        : Icons.trending_flat,
-                    size: 14,
+                        ? FontAwesomeIcons.arrowTrendUp
+                        : FontAwesomeIcons.minus,
+                    size: 12,
                     color: trendColor,
                   ),
                   const SizedBox(width: 4),

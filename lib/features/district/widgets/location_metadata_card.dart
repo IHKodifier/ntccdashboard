@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants.dart';
 
 class LocationMetadataCard extends StatelessWidget {
@@ -38,19 +39,19 @@ class LocationMetadataCard extends StatelessWidget {
               ),
               const SizedBox(height: 24),
               _buildMetaItem(
-                Icons.location_searching_rounded,
+                FontAwesomeIcons.crosshairs,
                 'COORDINATES',
                 '31.5204° N, 74.3587° E',
               ),
               const SizedBox(height: 20),
               _buildMetaItem(
-                Icons.business_rounded,
+                FontAwesomeIcons.building,
                 'ADDRESS',
                 '99-B2, M.M. Alam Rd, Gulberg III, Lahore, 54000',
               ),
               const SizedBox(height: 20),
               _buildMetaItem(
-                Icons.person_outline_rounded,
+                FontAwesomeIcons.user,
                 'OWNER / CONTACT',
                 'M. Zubair (+92 300 1234567)',
               ),
@@ -97,7 +98,7 @@ class LocationMetadataCard extends StatelessWidget {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Icon(icon, size: 18, color: AppColors.primary),
+        FaIcon(icon, size: 14, color: AppColors.primary),
         const SizedBox(width: 16),
         Expanded(
           child: Column(

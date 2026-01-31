@@ -102,7 +102,7 @@ class ViolationHeatmapGrid extends StatelessWidget {
         TableRow(
           decoration: const BoxDecoration(color: Color(0xFFF9FAFB)),
           children: [
-            const _TableCell('DISTRICT \ TYPE', isHeader: true),
+            const _TableCell('DISTRICT  TYPE', isHeader: true),
             ...types.map((t) => _TableCell(t, isHeader: true)),
           ],
         ),

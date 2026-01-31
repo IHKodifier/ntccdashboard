@@ -3,22 +3,25 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../core/constants.dart';
 import '../../core/dashboard_provider.dart';
-import 'widgets/stats_card.dart';
-import 'widgets/filter_bar.dart';
-import 'widgets/provincial_performance_table.dart';
-import 'widgets/active_alerts_list.dart';
+import '../national/widgets/stats_card.dart';
+import '../national/widgets/filter_bar.dart';
+import '../national/widgets/provincial_performance_table.dart';
+import '../national/widgets/active_alerts_list.dart';
 
-class NationalOverviewScreen extends ConsumerWidget {
-  const NationalOverviewScreen({super.key});
+class DistrictOverviewScreen extends ConsumerWidget {
+  const DistrictOverviewScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final dashboardState = ref.watch(dashboardProvider);
+    final districtName = dashboardState.selectedDistrict ?? 'Province';
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(32.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildTitleSection(),
+          _buildTitleSection(districtName),
           const SizedBox(height: 32),
           const NationalFilterBar(),
           const SizedBox(height: 32),
@@ -33,10 +36,8 @@ class NationalOverviewScreen extends ConsumerWidget {
                     const StatsCardGrid(),
                     const SizedBox(height: 32),
                     ProvincialPerformanceTable(
-                      onProvinceTap: (province) {
-                        ref
-                            .read(dashboardProvider.notifier)
-                            .navigateToProvincial(province);
+                      onProvinceTap: (entity) {
+                        // District level - no further drill-down
                       },
                     ),
                   ],
@@ -52,26 +53,26 @@ class NationalOverviewScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTitleSection() {
+  Widget _buildTitleSection(String districtName) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        const Column(
+        Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'National Dashboard Overview',
-              style: TextStyle(
+              '$districtName Dashboard Overview',
+              style: const TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.w800,
                 color: AppColors.textPrimary,
                 letterSpacing: -0.5,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
-              'Strategic monitoring of tobacco control efforts across Pakistan',
-              style: TextStyle(
+              'District monitoring of tobacco control efforts in $districtName',
+              style: const TextStyle(
                 fontSize: 14,
                 color: AppColors.textSecondary,
                 fontWeight: FontWeight.w500,
@@ -119,11 +120,11 @@ class NationalOverviewScreen extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.primary.withOpacity(0.9),
+        color: AppColors.primary.withValues(alpha: 0.9),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withOpacity(0.3),
+            color: AppColors.primary.withValues(alpha: 0.3),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),

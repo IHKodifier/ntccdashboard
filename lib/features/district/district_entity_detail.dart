@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../core/constants.dart';
 import '../../core/dashboard_provider.dart';
 import 'widgets/entity_stats_grid.dart';
@@ -94,20 +95,24 @@ class DistrictEntityDetail extends ConsumerWidget {
                 'Dashboard',
                 style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
-              const Icon(
-                Icons.chevron_right,
-                size: 14,
+              const SizedBox(width: 8),
+              const FaIcon(
+                FontAwesomeIcons.chevronRight,
+                size: 10,
                 color: AppColors.textSecondary,
               ),
+              const SizedBox(width: 8),
               const Text(
                 'District Enforcement',
                 style: TextStyle(fontSize: 12, color: AppColors.textSecondary),
               ),
-              const Icon(
-                Icons.chevron_right,
-                size: 14,
+              const SizedBox(width: 8),
+              const FaIcon(
+                FontAwesomeIcons.chevronRight,
+                size: 10,
                 color: AppColors.textSecondary,
               ),
+              const SizedBox(width: 8),
               Text(
                 state.selectedDistrict ?? 'Entity',
                 style: const TextStyle(
@@ -119,13 +124,13 @@ class DistrictEntityDetail extends ConsumerWidget {
             ],
           ),
           const Spacer(),
-          _buildHeaderButton(Icons.print_outlined, 'Print Summary'),
+          _buildHeaderButton(FontAwesomeIcons.print, 'Print Summary'),
           const SizedBox(width: 12),
           IconButton(
             onPressed: () => ref
                 .read(dashboardProvider.notifier)
                 .navigateToProvincial(state.selectedProvince ?? 'Punjab'),
-            icon: const Icon(Icons.close),
+            icon: const FaIcon(FontAwesomeIcons.xmark, size: 18),
             style: IconButton.styleFrom(
               backgroundColor: const Color(0xFFF5F7FA),
               shape: RoundedRectangleBorder(
@@ -201,7 +206,7 @@ class DistrictEntityDetail extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: AppColors.textPrimary),
+          FaIcon(icon, size: 14, color: AppColors.textPrimary),
           const SizedBox(width: 8),
           Text(
             label,

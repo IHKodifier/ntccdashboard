@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/constants.dart';
 import '../../../core/mock_data.dart';
+import '../../../core/dashboard_provider.dart';
 
-class ProvincialPerformanceTable extends StatefulWidget {
+class ProvincialPerformanceTable extends ConsumerStatefulWidget {
   final Function(String) onProvinceTap;
 
   const ProvincialPerformanceTable({super.key, required this.onProvinceTap});
 
   @override
-  State<ProvincialPerformanceTable> createState() =>
+  ConsumerState<ProvincialPerformanceTable> createState() =>
       _ProvincialPerformanceTableState();
 }
 
 class _ProvincialPerformanceTableState
-    extends State<ProvincialPerformanceTable> {
+    extends ConsumerState<ProvincialPerformanceTable> {
   bool _isLoading = true;
 
   @override
@@ -27,6 +29,10 @@ class _ProvincialPerformanceTableState
 
   @override
   Widget build(BuildContext context) {
+    final isFilterLoading = ref.watch(
+      dashboardProvider.select((s) => s.isFilterLoading),
+    );
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -60,7 +66,7 @@ class _ProvincialPerformanceTableState
             ),
           ),
           _buildTableHeader(),
-          if (_isLoading)
+          if (_isLoading || isFilterLoading)
             _buildShimmerRows()
           else
             Column(

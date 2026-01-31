@@ -1,12 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'core/constants.dart';
 import 'core/dashboard_provider.dart';
 import 'features/national/national_overview_screen.dart';
-import 'features/provincial/provincial_summary_screen.dart';
-import 'features/district/district_entity_detail.dart';
+import 'features/national/national_compliance_screen.dart';
+import 'features/national/national_violations_screen.dart';
+import 'features/national/national_retail_screen.dart';
+import 'features/national/national_psv_screen.dart';
+import 'features/national/national_enforcement_screen.dart';
+import 'features/national/national_reporting_screen.dart';
+import 'features/provincial/provincial_overview_screen.dart';
+import 'features/provincial/provincial_compliance_screen.dart';
+import 'features/provincial/provincial_violations_screen.dart';
+import 'features/provincial/provincial_retail_screen.dart';
+import 'features/provincial/provincial_psv_screen.dart';
+import 'features/provincial/provincial_enforcement_screen.dart';
+import 'features/provincial/provincial_reports_screen.dart';
+import 'features/district/district_overview_screen.dart';
+import 'features/district/district_compliance_screen.dart';
+import 'features/district/district_violations_screen.dart';
+import 'features/district/district_retail_screen.dart';
+import 'features/district/district_psv_screen.dart';
+import 'features/district/district_enforcement_screen.dart';
+import 'features/district/district_reports_screen.dart';
 import 'core/widgets/sidebar.dart';
+import 'core/widgets/role_switcher.dart';
+import 'core/widgets/loading_shimmer.dart';
 
 class NTCCDashboardApp extends StatelessWidget {
   const NTCCDashboardApp({super.key});
@@ -40,10 +61,7 @@ class DashboardShell extends ConsumerWidget {
     return Scaffold(
       body: Row(
         children: [
-          Sidebar(
-            onOverviewTap: () =>
-                ref.read(dashboardProvider.notifier).navigateToNational(),
-          ),
+          const Sidebar(),
           // Main Content
           Expanded(
             child: Column(
@@ -60,15 +78,37 @@ class DashboardShell extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Row(
                     children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          color: AppColors.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: IconButton(
+                          onPressed: () => ref
+                              .read(dashboardProvider.notifier)
+                              .toggleSidebar(),
+                          icon: FaIcon(
+                            dashboardState.isSidebarCollapsed
+                                ? FontAwesomeIcons.bars
+                                : FontAwesomeIcons.barsStaggered,
+                            color: AppColors.primary,
+                            size: 18,
+                          ),
+                          tooltip: 'Toggle Sidebar',
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       _buildLevelIndicator(dashboardState),
+                      const SizedBox(width: 16),
+                      const RoleSwitcher(),
                       const Spacer(),
                       // Action Icons
                       const _HeaderIcon(
-                        icon: Icons.notifications_none_rounded,
+                        icon: FontAwesomeIcons.bell,
                         hasBadge: true,
                       ),
                       const SizedBox(width: 16),
-                      const _HeaderIcon(icon: Icons.settings_outlined),
+                      const _HeaderIcon(icon: FontAwesomeIcons.gear),
                       const SizedBox(width: 32),
                       // Vertical Divider
                       Container(
@@ -112,8 +152,8 @@ class DashboardShell extends ConsumerWidget {
                         child: CircleAvatar(
                           radius: 20,
                           backgroundColor: AppColors.primary.withOpacity(0.1),
-                          backgroundImage: const NetworkImage(
-                            AppConstants.userAvatar,
+                          backgroundImage: const AssetImage(
+                            'assets/images/user_avatar.png',
                           ),
                         ),
                       ),
@@ -122,21 +162,24 @@ class DashboardShell extends ConsumerWidget {
                 ),
                 // Content Area
                 Expanded(
-                  child: AnimatedSwitcher(
-                    duration: const Duration(milliseconds: 300),
-                    child: _buildCurrentScreen(dashboardState),
-                    transitionBuilder: (child, animation) {
-                      return FadeTransition(
-                        opacity: animation,
-                        child: SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(0.02, 0),
-                            end: Offset.zero,
-                          ).animate(animation),
-                          child: child,
-                        ),
-                      );
-                    },
+                  child: LoadingShimmer(
+                    isLoading: dashboardState.isRoleSwitching,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: _buildCurrentScreen(dashboardState),
+                      transitionBuilder: (child, animation) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: SlideTransition(
+                            position: Tween<Offset>(
+                              begin: const Offset(0.02, 0),
+                              end: Offset.zero,
+                            ).animate(animation),
+                            child: child,
+                          ),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ],
@@ -157,7 +200,11 @@ class DashboardShell extends ConsumerWidget {
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.public, size: 18, color: AppColors.primary),
+          const FaIcon(
+            FontAwesomeIcons.globe,
+            size: 16,
+            color: AppColors.primary,
+          ),
           const SizedBox(width: 10),
           Text(
             _getHeaderTitle(state),
@@ -167,9 +214,9 @@ class DashboardShell extends ConsumerWidget {
               fontSize: 14,
             ),
           ),
-          const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            size: 18,
+          const FaIcon(
+            FontAwesomeIcons.chevronDown,
+            size: 14,
             color: AppColors.primary,
           ),
         ],
@@ -178,24 +225,82 @@ class DashboardShell extends ConsumerWidget {
   }
 
   String _getHeaderTitle(DashboardState state) {
-    switch (state.currentLevel) {
-      case DashboardLevel.national:
-        return 'National Overview';
-      case DashboardLevel.provincial:
-        return '${state.selectedProvince} Overview';
-      case DashboardLevel.district:
-        return '${state.selectedDistrict} Detail';
+    if (state.hierarchy == DashboardHierarchy.national) {
+      switch (state.module) {
+        case DashboardModule.overview:
+          return 'National Overview';
+        case DashboardModule.compliance:
+          return 'Compliance Dashboard';
+        case DashboardModule.violations:
+          return 'Violation Monitoring';
+        case DashboardModule.retail:
+          return 'Retail Compliance';
+        case DashboardModule.psv:
+          return 'PSV Enforcement';
+        case DashboardModule.enforcement:
+          return 'Enforcement Tracking';
+        case DashboardModule.reports:
+          return 'Analytical Reports';
+      }
+    } else if (state.hierarchy == DashboardHierarchy.provincial) {
+      return '${state.selectedProvince} Overview';
+    } else {
+      return '${state.selectedDistrict} Detail';
     }
   }
 
   Widget _buildCurrentScreen(DashboardState state) {
-    switch (state.currentLevel) {
-      case DashboardLevel.national:
-        return const NationalOverviewScreen();
-      case DashboardLevel.provincial:
-        return const ProvincialSummaryScreen();
-      case DashboardLevel.district:
-        return const DistrictEntityDetail();
+    if (state.hierarchy == DashboardHierarchy.national) {
+      switch (state.module) {
+        case DashboardModule.overview:
+          return const NationalOverviewScreen();
+        case DashboardModule.compliance:
+          return const NationalComplianceScreen();
+        case DashboardModule.violations:
+          return const NationalViolationsScreen();
+        case DashboardModule.retail:
+          return const NationalRetailScreen();
+        case DashboardModule.psv:
+          return const NationalPSVScreen();
+        case DashboardModule.enforcement:
+          return const NationalEnforcementScreen();
+        case DashboardModule.reports:
+          return const NationalReportingScreen();
+      }
+    } else if (state.hierarchy == DashboardHierarchy.provincial) {
+      switch (state.module) {
+        case DashboardModule.overview:
+          return const ProvincialOverviewScreen();
+        case DashboardModule.compliance:
+          return const ProvincialComplianceScreen();
+        case DashboardModule.violations:
+          return const ProvincialViolationsScreen();
+        case DashboardModule.retail:
+          return const ProvincialRetailScreen();
+        case DashboardModule.psv:
+          return const ProvincialPSVScreen();
+        case DashboardModule.enforcement:
+          return const ProvincialEnforcementScreen();
+        case DashboardModule.reports:
+          return const ProvincialReportsScreen();
+      }
+    } else {
+      switch (state.module) {
+        case DashboardModule.overview:
+          return const DistrictOverviewScreen();
+        case DashboardModule.compliance:
+          return const DistrictComplianceScreen();
+        case DashboardModule.violations:
+          return const DistrictViolationsScreen();
+        case DashboardModule.retail:
+          return const DistrictRetailScreen();
+        case DashboardModule.psv:
+          return const DistrictPSVScreen();
+        case DashboardModule.enforcement:
+          return const DistrictEnforcementScreen();
+        case DashboardModule.reports:
+          return const DistrictReportsScreen();
+      }
     }
   }
 }

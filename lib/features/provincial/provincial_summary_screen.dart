@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../core/constants.dart';
 import '../../core/dashboard_provider.dart';
 import 'widgets/violation_distribution_chart.dart';
@@ -80,11 +81,13 @@ class ProvincialSummaryScreen extends ConsumerWidget {
                 ),
               ),
             ),
-            const Icon(
-              Icons.chevron_right,
-              size: 16,
+            const SizedBox(width: 8),
+            const FaIcon(
+              FontAwesomeIcons.chevronRight,
+              size: 10,
               color: AppColors.textSecondary,
             ),
+            const SizedBox(width: 8),
             Text(
               '${state.selectedProvince} Dashboard',
               style: const TextStyle(
@@ -114,7 +117,11 @@ class ProvincialSummaryScreen extends ConsumerWidget {
                 const SizedBox(height: 8),
                 const Row(
                   children: [
-                    Icon(Icons.sync, size: 14, color: AppColors.textSecondary),
+                    FaIcon(
+                      FontAwesomeIcons.rotate,
+                      size: 12,
+                      color: AppColors.textSecondary,
+                    ),
                     SizedBox(width: 6),
                     Text(
                       'Last synced: 10 minutes ago',
@@ -130,7 +137,10 @@ class ProvincialSummaryScreen extends ConsumerWidget {
             ),
             Row(
               children: [
-                _buildActionButton(Icons.file_download_outlined, 'Export Data'),
+                _buildActionButton(
+                  FontAwesomeIcons.fileArrowDown,
+                  'Export Data',
+                ),
                 const SizedBox(width: 16),
                 _buildPrimaryActionButton('Generate Report'),
               ],
@@ -144,13 +154,13 @@ class ProvincialSummaryScreen extends ConsumerWidget {
   Widget _buildFilterRow() {
     return Row(
       children: [
-        _buildSmallFilter('Date: Last 30 Days', Icons.calendar_today_outlined),
+        _buildSmallFilter('Date: Last 30 Days', FontAwesomeIcons.calendarDays),
         const SizedBox(width: 12),
-        _buildSmallFilter('All Districts (36)', Icons.location_on_outlined),
+        _buildSmallFilter('All Districts (36)', FontAwesomeIcons.locationDot),
         const SizedBox(width: 12),
         _buildSmallFilter(
           'Violation Type: All (8)',
-          Icons.warning_amber_rounded,
+          FontAwesomeIcons.triangleExclamation,
         ),
         const Spacer(),
         TextButton(
@@ -174,7 +184,7 @@ class ProvincialSummaryScreen extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 14, color: AppColors.textSecondary),
+          FaIcon(icon, size: 12, color: AppColors.textSecondary),
           const SizedBox(width: 8),
           Text(
             label,
@@ -184,10 +194,10 @@ class ProvincialSummaryScreen extends ConsumerWidget {
               color: AppColors.textPrimary,
             ),
           ),
-          const SizedBox(width: 4),
-          const Icon(
-            Icons.keyboard_arrow_down_rounded,
-            size: 16,
+          const SizedBox(width: 8),
+          const FaIcon(
+            FontAwesomeIcons.chevronDown,
+            size: 10,
             color: AppColors.textSecondary,
           ),
         ],
@@ -205,7 +215,7 @@ class ProvincialSummaryScreen extends ConsumerWidget {
       ),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: AppColors.textSecondary),
+          FaIcon(icon, size: 14, color: AppColors.textSecondary),
           const SizedBox(width: 8),
           Text(
             label,

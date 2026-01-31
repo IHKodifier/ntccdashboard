@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants.dart';
 import '../../../core/mock_data.dart';
+import '../../../core/dashboard_provider.dart';
 
-class ActiveAlertsList extends StatelessWidget {
+class ActiveAlertsList extends ConsumerWidget {
   const ActiveAlertsList({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isFilterLoading = ref.watch(
+      dashboardProvider.select((s) => s.isFilterLoading),
+    );
+
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -22,9 +30,9 @@ class ActiveAlertsList extends StatelessWidget {
             children: [
               const Row(
                 children: [
-                  Icon(
-                    Icons.notifications_active_outlined,
-                    size: 18,
+                  FaIcon(
+                    FontAwesomeIcons.circleExclamation,
+                    size: 16,
                     color: Colors.orange,
                   ),
                   SizedBox(width: 8),
@@ -56,24 +64,31 @@ class ActiveAlertsList extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
-          ...MockData.activeAlerts.expand(
-            (alert) => [
-              _AlertItem(
-                type: AlertType.values.firstWhere(
-                  (e) => e.name == alert['type'],
-                ),
-                title: alert['title'],
-                description: alert['description'],
-                time: alert['time'],
-              ),
-              if (MockData.activeAlerts.last != alert)
-                const Divider(
-                  height: 32,
-                  thickness: 1,
-                  color: Color(0xFFF5F5F5),
-                ),
-            ],
-          ),
+          if (isFilterLoading)
+            _buildShimmerList()
+          else
+            Column(
+              children: MockData.activeAlerts
+                  .expand(
+                    (alert) => [
+                      _AlertItem(
+                        type: AlertType.values.firstWhere(
+                          (e) => e.name == alert['type'],
+                        ),
+                        title: alert['title'],
+                        description: alert['description'],
+                        time: alert['time'],
+                      ),
+                      if (MockData.activeAlerts.last != alert)
+                        const Divider(
+                          height: 32,
+                          thickness: 1,
+                          color: Color(0xFFF5F5F5),
+                        ),
+                    ],
+                  )
+                  .toList(),
+            ),
           const SizedBox(height: 24),
           SizedBox(
             width: double.infinity,
@@ -98,6 +113,30 @@ class ActiveAlertsList extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildShimmerList() {
+    return Shimmer.fromColors(
+      baseColor: Colors.white,
+      highlightColor: const Color(0xFFF0F0F0),
+      child: Column(
+        children: List.generate(
+          3,
+          (index) => Column(
+            children: [
+              Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
       ),
     );
   }

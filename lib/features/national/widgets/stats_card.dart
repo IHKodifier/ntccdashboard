@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../../core/constants.dart';
 import '../../../core/mock_data.dart';
+import '../../../core/dashboard_provider.dart';
 
 class StatsCardGrid extends StatelessWidget {
   const StatsCardGrid({super.key});
@@ -29,7 +31,7 @@ class StatsCardGrid extends StatelessWidget {
   }
 }
 
-class StatsCard extends StatefulWidget {
+class StatsCard extends ConsumerStatefulWidget {
   final String title;
   final String value;
   final String trend;
@@ -46,16 +48,16 @@ class StatsCard extends StatefulWidget {
   });
 
   @override
-  State<StatsCard> createState() => _StatsCardState();
+  ConsumerState<StatsCard> createState() => _StatsCardState();
 }
 
-class _StatsCardState extends State<StatsCard> {
+class _StatsCardState extends ConsumerState<StatsCard> {
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
-    // Simulation of loading
+    // Simulation of initial loading
     Future.delayed(const Duration(milliseconds: 1500), () {
       if (mounted) {
         setState(() {
@@ -67,7 +69,11 @@ class _StatsCardState extends State<StatsCard> {
 
   @override
   Widget build(BuildContext context) {
-    if (_isLoading) {
+    final isFilterLoading = ref.watch(
+      dashboardProvider.select((s) => s.isFilterLoading),
+    );
+
+    if (_isLoading || isFilterLoading) {
       return Shimmer.fromColors(
         baseColor: Colors.white,
         highlightColor: const Color(0xFFF0F0F0),
