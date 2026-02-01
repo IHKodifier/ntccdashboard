@@ -19,7 +19,7 @@ samples, guidance on mobile development, and a full API reference.
 
 This app is configured to deploy automatically to GitHub Pages.
 
-**Live URL**: [https://IHKodifier.github.io/ntcc_dashboard/](https://IHKodifier.github.io/ntcc_dashboard/)
+**Live URL**: [https://IHKodifier.github.io/ntccdashboard/](https://IHKodifier.github.io/ntccdashboard/)
 
 ### How it works
 The GitHub Actions workflow in `.github/workflows/deploy.yml` automatically builds and deploys the app whenever you push or merge to the `main` branch.
