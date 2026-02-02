@@ -6,57 +6,20 @@ part of 'dashboard_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-// GENERATED CODE - DO NOT MODIFY BY HAND
-// ignore_for_file: type=lint, type=warning
-
-@ProviderFor(Dashboard)
-final dashboardProvider = DashboardProvider._();
-
-final class DashboardProvider
-    extends $NotifierProvider<Dashboard, DashboardState> {
-  DashboardProvider._()
-    : super(
-        from: null,
-        argument: null,
-        retry: null,
-        name: r'dashboardProvider',
-        isAutoDispose: true,
-        dependencies: null,
-        $allTransitiveDependencies: null,
-      );
-
-  @override
-  String debugGetCreateSourceHash() => _$dashboardHash();
-
-  @$internal
-  @override
-  Dashboard create() => Dashboard();
-
-  /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(DashboardState value) {
-    return $ProviderOverride(
-      origin: this,
-      providerOverride: $SyncValueProvider<DashboardState>(value),
-    );
-  }
-}
-
 String _$dashboardHash() => r'ed227d68e5a4cde4f62b02fc4ddf894c93b13173';
 
-abstract class _$Dashboard extends $Notifier<DashboardState> {
-  DashboardState build();
-  @$mustCallSuper
-  @override
-  void runBuild() {
-    final ref = this.ref as $Ref<DashboardState, DashboardState>;
-    final element =
-        ref.element
-            as $ClassProviderElement<
-              AnyNotifier<DashboardState, DashboardState>,
-              DashboardState,
-              Object?,
-              Object?
-            >;
-    element.handleCreate(ref, build);
-  }
-}
+/// See also [Dashboard].
+@ProviderFor(Dashboard)
+final dashboardProvider =
+    AutoDisposeNotifierProvider<Dashboard, DashboardState>.internal(
+  Dashboard.new,
+  name: r'dashboardProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$dashboardHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+typedef _$Dashboard = AutoDisposeNotifier<DashboardState>;
+// ignore_for_file: type=lint
+// ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -78,26 +78,7 @@ class DashboardShell extends ConsumerWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 32),
                   child: Row(
                     children: [
-                      Container(
-                        decoration: BoxDecoration(
-                          color: AppColors.primary.withOpacity(0.1),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: IconButton(
-                          onPressed: () => ref
-                              .read(dashboardProvider.notifier)
-                              .toggleSidebar(),
-                          icon: FaIcon(
-                            dashboardState.isSidebarCollapsed
-                                ? FontAwesomeIcons.bars
-                                : FontAwesomeIcons.barsStaggered,
-                            color: AppColors.primary,
-                            size: 18,
-                          ),
-                          tooltip: 'Toggle Sidebar',
-                        ),
-                      ),
-                      const SizedBox(width: 8),
+                      // Sidebar toggle removed as per request
                       _buildLevelIndicator(dashboardState),
                       const SizedBox(width: 16),
                       const RoleSwitcher(),

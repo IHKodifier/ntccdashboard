@@ -14,16 +14,15 @@ class Sidebar extends ConsumerWidget {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
+      curve: Curves.easeOutExpo,
       width: isCollapsed ? 80 : 260,
       decoration: const BoxDecoration(
         color: AppColors.sidebar,
         border: Border(right: BorderSide(color: Colors.white12, width: 1)),
       ),
       child: Column(
-        crossAxisAlignment: isCollapsed
-            ? CrossAxisAlignment.center
-            : CrossAxisAlignment.start,
+        crossAxisAlignment:
+            isCollapsed ? CrossAxisAlignment.center : CrossAxisAlignment.start,
         children: [
           // Sidebar Toggle Button
           Align(
@@ -51,8 +50,13 @@ class Sidebar extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           // Logo Section
-          Padding(
-            padding: const EdgeInsets.all(24.0),
+          AnimatedPadding(
+            duration: const Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+            padding: EdgeInsets.symmetric(
+              horizontal: isCollapsed ? 12.0 : 24.0,
+              vertical: 24.0,
+            ),
             child: Row(
               mainAxisAlignment: isCollapsed
                   ? MainAxisAlignment.center
@@ -271,9 +275,8 @@ class _SidebarItem extends StatelessWidget {
               vertical: 12,
             ),
             decoration: BoxDecoration(
-              color: isActive
-                  ? Colors.white.withOpacity(0.1)
-                  : Colors.transparent,
+              color:
+                  isActive ? Colors.white.withOpacity(0.1) : Colors.transparent,
               borderRadius: BorderRadius.circular(12),
             ),
             child: Row(

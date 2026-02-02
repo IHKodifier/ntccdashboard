@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants.dart';
 import '../../../core/dashboard_provider.dart';
+import 'custom_date_range_picker.dart';
 
 class NationalFilterBar extends ConsumerWidget {
   const NationalFilterBar({super.key});
@@ -45,26 +46,18 @@ class NationalFilterBar extends ConsumerWidget {
               dateRangeDisplay,
               FontAwesomeIcons.calendarDays,
               () async {
-                final range = await showDateRangePicker(
+                await showDialog(
                   context: context,
-                  firstDate: DateTime(2020),
-                  lastDate: DateTime(2030),
-                  initialDateRange: dashboardState.selectedDateRange,
-                  builder: (context, child) {
-                    return Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(
-                          maxWidth: 400,
-                          maxHeight: 600,
-                        ),
-                        child: Dialog(child: child),
-                      ),
-                    );
-                  },
+                  builder: (context) => CustomDateRangePicker(
+                    initialStartDate: dashboardState.selectedDateRange?.start,
+                    initialEndDate: dashboardState.selectedDateRange?.end,
+                    onApply: (range) {
+                      ref
+                          .read(dashboardProvider.notifier)
+                          .updateDateRange(range);
+                    },
+                  ),
                 );
-                if (range != null) {
-                  ref.read(dashboardProvider.notifier).updateDateRange(range);
-                }
               },
             ),
           ),
