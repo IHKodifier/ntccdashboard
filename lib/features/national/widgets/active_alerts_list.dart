@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
+import '../../../core/widgets/custom_shimmer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants.dart';
 import '../../../core/mock_data.dart';
@@ -118,9 +118,7 @@ class ActiveAlertsList extends ConsumerWidget {
   }
 
   Widget _buildShimmerList() {
-    return Shimmer.fromColors(
-      baseColor: Colors.white,
-      highlightColor: const Color(0xFFF0F0F0),
+    return CustomShimmer(
       child: Column(
         children: List.generate(
           3,

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
+import '../../../core/widgets/custom_shimmer.dart';
 import '../../../core/constants.dart';
 import '../../../core/mock_data.dart';
 import '../../../core/dashboard_provider.dart';
@@ -74,9 +74,7 @@ class _StatsCardState extends ConsumerState<StatsCard> {
     );
 
     if (_isLoading || isFilterLoading) {
-      return Shimmer.fromColors(
-        baseColor: Colors.white,
-        highlightColor: const Color(0xFFF0F0F0),
+      return CustomShimmer(
         child: Container(
           height: 140,
           decoration: BoxDecoration(
@@ -129,11 +127,10 @@ class _StatsCardState extends ConsumerState<StatsCard> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                 decoration: BoxDecoration(
-                  color:
-                      (widget.isNegativeTrend
-                              ? AppColors.error
-                              : AppColors.success)
-                          .withOpacity(0.1),
+                  color: (widget.isNegativeTrend
+                          ? AppColors.error
+                          : AppColors.success)
+                      .withOpacity(0.1),
                   borderRadius: BorderRadius.circular(4),
                 ),
                 child: Text(

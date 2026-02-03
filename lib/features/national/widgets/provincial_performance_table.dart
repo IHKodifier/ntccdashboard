@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:shimmer/shimmer.dart';
+import '../../../core/widgets/custom_shimmer.dart';
 import '../../../core/constants.dart';
 import '../../../core/mock_data.dart';
 import '../../../core/dashboard_provider.dart';
@@ -178,9 +178,9 @@ class _ProvincialPerformanceTableState
               flex: 1,
               child: Text(
                 inspections.toString().replaceAllMapped(
-                  RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                  (Match m) => '${m[1]},',
-                ),
+                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                      (Match m) => '${m[1]},',
+                    ),
                 style: const TextStyle(
                   fontWeight: FontWeight.w500,
                   fontSize: 13,
@@ -223,9 +223,7 @@ class _ProvincialPerformanceTableState
   }
 
   Widget _buildShimmerRows() {
-    return Shimmer.fromColors(
-      baseColor: Colors.white,
-      highlightColor: const Color(0xFFF0F0F0),
+    return CustomShimmer(
       child: Column(
         children: List.generate(
           5,

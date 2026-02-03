@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants.dart';
 
 class LoadingShimmer extends StatefulWidget {
   final Widget child;
@@ -55,9 +56,9 @@ class _LoadingShimmerState extends State<LoadingShimmer>
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Colors.white.withValues(alpha: 0.0),
-                        Colors.white.withValues(alpha: 0.3),
-                        Colors.white.withValues(alpha: 0.0),
+                        AppColors.shimmerHighlight.withValues(alpha: 0.0),
+                        AppColors.shimmerHighlight.withValues(alpha: 0.3),
+                        AppColors.shimmerHighlight.withValues(alpha: 0.0),
                       ],
                       stops: [
                         (_animation.value - 0.3).clamp(0.0, 1.0),
